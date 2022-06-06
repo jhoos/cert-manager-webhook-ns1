@@ -1,0 +1,8 @@
+/Makefile
+/.dockerignore
+/.gitignore
+/.git
+/_out
+/README.md
+/LICENSE
+/deploy

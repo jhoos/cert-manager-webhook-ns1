@@ -1,6 +1,6 @@
 IMAGE_NAME := cert-manager-webhook-ns1
 IMAGE_TAG := latest
-REPO_NAME := ns1inc
+REPO_NAME := registry.home.thwack.net
 
 OUT := $(shell pwd)/_out
 
@@ -12,13 +12,10 @@ all: ;
 
 # When Go code changes, we need to update the Docker image
 build:
-	docker build -t "$(IMAGE_NAME):$(IMAGE_TAG)" .
+	docker buildx build --platform linux/x86_64,linux/arm64 -t "$(IMAGE_NAME):$(IMAGE_TAG)" .
 
-tag:
-	docker tag "$(IMAGE_NAME):$(IMAGE_TAG)" "$(REPO_NAME)/$(IMAGE_NAME):$(IMAGE_TAG)"
-
-push:
-	docker push "$(REPO_NAME)/$(IMAGE_NAME):$(IMAGE_TAG)"
+push: 
+	docker buildx build --platform linux/x86_64,linux/arm64 -t "$(REPO_NAME)/$(IMAGE_NAME):$(IMAGE_TAG)" --push .
 
 
 # When helm chart changes, we need to publish to the repo (/docs/):
